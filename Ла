@@ -1,0 +1,116 @@
+НОМЕР 1 Python:
+def gradient_descent(f, x0, alpha, epsilon):
+  """
+  Функция для поиска оптимума функции f методом покоординатного спуска.
+
+  Args:
+    f: Функция, значение которой нужно минимизировать.
+    x0: Начальная точка.
+    alpha: Шаг итерации.
+    epsilon: Критерий остановки.
+
+  Returns:
+    x: Точка, в которой достигается минимум функции f.
+  """
+
+  x = x0.copy()
+  while True:
+    for i in range(len(x)):
+      xi = x[i]
+      x[i] = xi - alpha * partial_derivative(f, x, i)
+      if abs(f(x) - f(x0)) < epsilon:
+        return x
+
+  return x
+
+def partial_derivative(f, x, i):
+  """
+  Функция для вычисления частной производной функции f по i-й координате.
+
+  Args:
+    f: Функция, значение которой нужно минимизировать.
+    x: Точка.
+    i: Индекс координаты.
+
+  Returns:
+    Частная производная функции f по i-й координате в точке x.
+  """
+
+  delta = 1e-5
+  xi = x[i]
+  x[i] = xi + delta
+  df_plus = f(x)
+  x[i] = xi - delta
+  df_minus = f(x)
+  x[i] = xi
+  return (df_plus - df_minus) / (2 * delta)
+
+def main():
+  """
+  Точка входа в программу.
+  """
+
+  f = lambda x: x[0]**2 + 31 + np.cos(11 * x[0] + 12 * x[1]) / 2
+  x0 = np.array([0, 0])
+  alpha = 0.1
+  epsilon = 1e-5
+
+  x_opt = gradient_descent(f, x0, alpha, epsilon)
+  print(f"Минимум функции f достигнут в точке x = {x_opt}.")
+  print(f"Значение функции f в точке x = {f(x_opt)}.")
+
+if name == "__main__":
+  main()
+..........................................................................................................................................................................................................................................
+НОМЕР 2 C++:
+#include <iostream>
+#include <vector>
+double f(const std::vector<double>& x) {
+  double result = 0;
+  for (int i = 0; i < x.size(); ++i) {
+    result += 7 * x[i] + 2 * std::pow(x[i], 11) + 5 * x[i] * x[i] - 10;
+  }
+  return result;
+}
+std::vector<double> gradient(const std::vector<double>& x) {
+  std::vector<double> grad(x.size());
+  for (int i = 0; i < x.size(); ++i) {
+    grad[i] = 7 + 22 * std::pow(x[i], 10) + 10 * x[i];
+  }
+  return grad;
+}
+void steepest_descent(std::vector<double>& x, double alpha, double epsilon) {
+  while (true) {
+    std::vector<double> grad = gradient(x);
+    double norm_grad = 0;
+    for (int i = 0; i < x.size(); ++i) {
+      norm_grad += std::pow(grad[i], 2);
+    }
+    norm_grad = std::sqrt(norm_grad);
+
+    if (norm_grad < epsilon) {
+      break;
+    }
+
+    for (int i = 0; i < x.size(); ++i) {
+      x[i] -= alpha * grad[i];
+    }
+  }
+}
+int main() {
+  std::vector<double> x = {1, 2, 3};
+  double alpha = 0.01;
+  double epsilon = 1e-6;
+
+  steepest_descent(x, alpha, epsilon);
+
+  for (int i = 0; i < x.size(); ++i) {
+    std::cout << x[i] << " ";
+  }
+  std::cout << std::endl;
+
+  double f_min = f(x);
+  std::cout << "f(x) = " << f_min << std::endl;
+
+  return 0;
+}
