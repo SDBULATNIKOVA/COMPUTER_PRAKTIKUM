@@ -1,0 +1,66 @@
+ПЕРВЫЙ НОМЕР python:
+import numpy as np
+
+# Данные
+X = np.array([-1.0, 0.0, 1.0, 2.0, 3.0])
+Y = np.array([-0.5, 0.0, 0.50, 0.86603, 1.0])
+
+# Вычисляем первую производную
+h = X[1] - X[0]  # Шаг
+dY_dx = (Y[1:] - Y[:-1]) / h
+
+# Вычисляем вторую производную
+d2Y_dx2 = (dY_dx[1:] - dY_dx[:-1]) / h
+
+# Оцениваем первую производную в x = 1.0
+f_prime = dY_dx[2]  # f'(1.0) = 0.5
+
+# Оцениваем вторую производную в x = 1.0
+f_second_prime = d2Y_dx2[1]  # f''(1.0) = 0.5
+
+# Выводим результаты
+print("Первая производная в x = 1.0:", f_prime)
+print("Вторая производная в x = 1.0:", f_second_prime)
+.......................................................................................................
+ВТОРОЙ НОМЕР C++:
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+double lagrange(double x, const vector<double>& x_data, const vector<double>& y_data) {
+    double result = 0.0;
+    for (int i = 0; i < x_data.size(); ++i) {
+        double basis = 1.0;
+        for (int j = 0; j < x_data.size(); ++j) {
+            if (i != j) {
+                basis *= (x - x_data[j]) / (x_data[i] - x_data[j]);
+            }
+        }
+        result += y_data[i] * basis;
+    }
+    return result;
+}
+
+double error(double x, const vector<double>& x_data, const vector<double>& y_data) {
+    return sin(x) - lagrange(x, x_data, y_data);
+}
+
+int main() {
+    // Задаем значения функции y = sin(xi) в точках x₁ = 0.1, 0.2π, 0.3π, 0.4π
+    vector<double> x_data = {0.1, 0.2 * M_PI, 0.3 * M_PI, 0.4 * M_PI};
+    vector<double> y_data;
+    for (double x : x_data) {
+        y_data.push_back(sin(x));
+    }
+
+    // Вычисляем значение интерполяционного многочлена Лагранжа в точке x* = 0.25π
+    double x_star = 0.25 * M_PI;
+    double y_star = lagrange(x_star, x_data, y_data);
+
+    // Вычисляем значение погрешности Д(у(х*)) интерполяции
+    double error_value = error(x_star, x_data, y_data);
+
+    // Выводим результаты
+    cout << "Значение
