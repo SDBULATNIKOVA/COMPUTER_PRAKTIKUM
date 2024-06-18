@@ -1,0 +1,218 @@
+НОМЕР 1 C++:
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+// Функция, для которой вычисляем интеграл
+double f(double x) {
+  return x * (13 + x * x) / pow(x, 3);
+}
+
+// Вычисление интеграла методом прямоугольников
+double integrate_rectangles(double a, double b, int n) {
+  double h = (b - a) / n;
+  double sum = 0;
+  for (int i = 0; i < n; ++i) {
+    sum += f(a + i * h) * h;
+  }
+  return sum;
+}
+
+// Вычисление интеграла методом трапеций
+double integrate_trapezoids(double a, double b, int n) {
+  double h = (b - a) / n;
+  double sum = f(a) + f(b);
+  for (int i = 1; i < n; ++i) {
+    sum += 2 * f(a + i * h);
+  }
+  return sum * h / 2;
+}
+
+// Вычисление интеграла методом Симпсона
+double integrate_simpson(double a, double b, int n) {
+  double h = (b - a) / n;
+  double sum1 = f(a) + f(b);
+  for (int i = 1; i < n; ++i) {
+    if (i % 2 == 0) {
+      sum1 += 2 * f(a + i * h);
+    } else {
+      sum1 += 4 * f(a + i * h);
+    }
+  }
+  return (h / 3) * (sum1 + f(a + h / 2));
+}
+
+int main() {
+  // Интервал интегрирования
+  double a = 0;
+  double b = 1;
+
+  // Количество разбиений
+  int n = 100;
+
+  // Вычисление интеграла методами прямоугольников, трапеций и Симпсона
+  double integral_rectangles = integrate_rectangles(a, b, n);
+  double integral_trapezoids = integrate_trapezoids(a, b, n);
+  double integral_simpson = integrate_simpson(a, b, n);
+
+  // Вывод результатов
+  cout << "Интеграл методом прямоугольников: " << integral_rectangles << endl;
+  cout << "Интеграл методом трапеций: " << integral_trapezoids << endl;
+  cout << "Интеграл методом Симпсона: " << integral_simpson << endl;
+
+  return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+НОМЕР 2 C++:
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+// Функция, которую будем интегрировать
+double func(double x) {
+    return exp(-2 * x) * sin(13 * x);
+}
+
+// Метод прямоугольников
+double integrateRectangles(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        sum += func(a + i * h);
+    }
+
+    return h * sum;
+}
+
+// Метод трапеций
+double integrateTrapezoids(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = 0.5 * (func(a) + func(b));
+
+    for (int i = 1; i < n; i++) {
+        sum += func(a + i * h);
+    }
+
+    return h * sum;
+}
+
+// Метод Симпсона (парабол)
+double integrateSimpson(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum1 = func(a) + func(b);
+    double sum2 = 0;
+
+    for (int i = 1; i < n; i++) {
+        sum1 += func(a + i * h);
+        sum2 += func(a + i * h + h / 2);
+    }
+
+    return h / 6 * (sum1 + 4 * sum2);
+}
+
+int main() {
+    double a = 0; // Нижний предел интегрирования
+    double b = 1; // Верхний предел интегрирования
+    int n = 1000000; // Количество отрезков
+
+    // Вычислить интеграл методом прямоугольников
+    double resultRectangles = integrateRectangles(a, b, n);
+    cout << "Прямоугольники: " << resultRectangles << endl;
+
+    // Вычислить интеграл методом трапеций
+    double resultTrapezoids = integrateTrapezoids(a, b, n);
+    cout << "Трапеции: " << resultTrapezoids << endl;
+
+    // Вычислить интеграл методом Симпсона (парабол)
+    double resultSimpson = integrateSimpson(a, b, n);
+    cout << "Симпсона (параболы): " << resultSimpson << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+НОМЕР 3 Python:
+def sum_series(n, eps):
+    """
+    Calculate the sum of the series:
+
+    (-1)^k - 1 / (2k - 1)
+
+    up to the nth term with an accuracy of eps.
+
+    Args:
+        n (int): The number of terms to sum.
+        eps (float): The desired accuracy.
+
+    Returns:
+        float: The sum of the series.
+    """
+
+    result = 0.0
+    for k in range(1, n + 1):
+        sign = 1 if k % 2 == 1 else -1
+        term = sign - 1 / (2 * k - 1)
+        result += term
+
+        # Check if the accuracy has been reached
+        if abs(term) < eps:
+            break
+
+    return result
+
+def main():
+    # Get the number of terms and the desired accuracy from the user
+    n = int(input("Enter the number of terms: "))
+    eps = float(input("Enter the desired accuracy: "))
+
+    # Calculate the sum of the series
+    sum = sum_series(n, eps)
+
+    # Print the result
+    print("The sum of the series is:", sum)
+
+if name == "__main__":
+    main()
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+НОМЕР 4 Python:
+import math
+
+def sum_series(x, n):
+    """
+    Calculate the sum of the series:
+
+    (-1)^k sin(kx) + 13 + k^2
+
+    up to the nth term for a given value of x.
+
+    Args:
+        x (float): The value of x.
+        n (int): The number of terms to sum.
+
+    Returns:
+        float: The sum of the series.
+    """
+
+    result = 0.0
+    for k in range(1, n + 1):
+        sign = 1 if k % 2 == 1 else -1
+        term = sign * math.sin(k * x) + 13 + k ** 2
+        result += term
+
+    return result
+
+def main():
+    # Get the value of x and the number of terms from the user
+    x = float(input("Enter the value of x: "))
+    n = int(input("Enter the number of terms: "))
+
+    # Calculate the sum of the series
+    sum = sum_series(x, n)
+
+    # Print the result
+    print("The sum of the series is:", sum)
+
+if name == "__main__":
+    main()
